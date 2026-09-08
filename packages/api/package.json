@@ -1,0 +1,28 @@
+{
+  "name": "@traveler-app/api",
+  "type": "module",
+  "exports": {
+    ".": {
+      "default": "./src/index.ts"
+    },
+    "./*": {
+      "default": "./src/*.ts"
+    }
+  },
+  "scripts": {},
+  "dependencies": {
+    "@traveler-app/auth": "workspace:*",
+    "@traveler-app/db": "workspace:*",
+    "@traveler-app/env": "workspace:*",
+    "@trpc/client": "catalog:",
+    "@trpc/server": "catalog:",
+    "better-auth": "catalog:",
+    "dotenv": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@traveler-app/config": "workspace:*",
+    "@types/express": "catalog:",
+    "typescript": "^6.0.3"
+  }
+}

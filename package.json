@@ -1,0 +1,56 @@
+{
+  "name": "traveler-app",
+  "private": true,
+  "workspaces": {
+    "packages": [
+      "apps/*",
+      "packages/*"
+    ],
+    "catalog": {
+      "dotenv": "^17.4.2",
+      "zod": "^4.4.3",
+      "@types/bun": "^1.4.0",
+      "@trpc/server": "^11.18.0",
+      "better-auth": "1.7.1",
+      "@types/express": "^5.0.6",
+      "lucide-react": "^1.27.0",
+      "next-themes": "^0.4.6",
+      "sonner": "^2.0.7",
+      "@trpc/tanstack-react-query": "^11.18.0",
+      "@trpc/client": "^11.18.0",
+      "@tanstack/react-query": "^5.101.4",
+      "@tanstack/react-form": "^1.33.2",
+      "@types/node": "^26.2.0",
+      "@types/react-dom": "^19.2.3",
+      "tailwindcss": "^4.3.3",
+      "@better-auth/expo": "1.7.1"
+    }
+  },
+  "type": "module",
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "check-types": "turbo run check-types",
+    "dev:native": "turbo run dev -F native --",
+    "dev:web": "turbo run dev -F web --",
+    "dev:server": "turbo run dev -F server --",
+    "db:push": "turbo run db:push -F @traveler-app/db --",
+    "db:studio": "turbo run db:studio -F @traveler-app/db --",
+    "db:generate": "turbo run db:generate -F @traveler-app/db --",
+    "db:migrate": "turbo run db:migrate -F @traveler-app/db --",
+    "check": "biome check --write ."
+  },
+  "dependencies": {
+    "@traveler-app/env": "workspace:*",
+    "dotenv": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.5.11",
+    "@traveler-app/config": "workspace:*",
+    "@types/bun": "catalog:",
+    "turbo": "^2.10.12",
+    "typescript": "^6.0.3"
+  },
+  "packageManager": "bun@1.4.0"
+}
