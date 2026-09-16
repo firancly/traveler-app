@@ -11,7 +11,22 @@ export function createAuth() {
     database: prismaAdapter(prisma, {
       provider: "postgresql",
     }),
+    rateLimit : {
+      enabled : true,
+      window : 60,
+      max : 100,
 
+      customRules : {
+        "/sign-in/email" : {
+          window : 60,
+          max : 5,
+        },
+        "/sign-up/email" : {
+          window : 60,
+          max : 5,
+        },
+      },
+    },
     trustedOrigins: [
       env.CORS_ORIGIN,
 
