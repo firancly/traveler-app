@@ -1,10 +1,82 @@
 generator client {
-  provider = "prisma-client"
-  output   = "../generated"
+  provider     = "prisma-client"
+  output       = "../generated"
   moduleFormat = "esm"
-  runtime = "bun"
+  runtime      = "bun"
 }
 
 datasource db {
   provider = "postgresql"
+}
+
+enum TripMemberRole {
+  owner
+  editor
+  viewer
+}
+
+model Trip {
+  id          String          @id @default(cuid())
+  name        String
+  description String?
+  startDate   DateTime?
+  endDate     DateTime?
+  ownerId     String
+  owner       User            @relation("TripOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+  members     TripMember[]
+  items       ItineraryItem[]
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  @@index([ownerId])
+  @@map("trip")
+}
+
+model TripMember {
+  id        String         @id @default(cuid())
+  tripId    String
+  userId    String
+  role      TripMemberRole
+  trip      Trip           @relation(fields: [tripId], references: [id], onDelete: Cascade)
+  user      User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+
+  @@unique([tripId, userId])
+  @@index([userId])
+  @@map("trip_member")
+}
+
+model ItineraryItem {
+  id        String    @id @default(cuid())
+  tripId    String
+  trip      Trip      @relation(fields: [tripId], references: [id], onDelete: Cascade)
+  title     String
+  notes     String?
+  placeId   String?
+  place     Place?    @relation(fields: [placeId], references: [id], onDelete: SetNull)
+  startAt   DateTime?
+  endAt     DateTime?
+  done      Boolean   @default(false)
+  position  Int
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([tripId])
+  @@index([placeId])
+  @@map("itinerary_item")
+}
+
+model Place {
+  id         String          @id @default(cuid())
+  name       String
+  address    String?
+  latitude   Float?
+  longitude  Float?
+  externalId String?
+  items      ItineraryItem[]
+  createdAt  DateTime        @default(now())
+  updatedAt  DateTime        @updatedAt
+
+  @@map("place")
 }

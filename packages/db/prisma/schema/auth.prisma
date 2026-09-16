@@ -8,7 +8,9 @@ model User {
   updatedAt     DateTime  @updatedAt
   sessions      Session[]
   accounts      Account[]
-
+  ownedTrips Trip[] @relation("TripOwner")
+  memberships TripMember[]
+  
   @@unique([email])
   @@map("user")
 }

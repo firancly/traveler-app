@@ -43,6 +43,7 @@
   "dependencies": {
     "@traveler-app/env": "workspace:*",
     "dotenv": "catalog:",
+    "resend": "^6.28.1",
     "zod": "catalog:"
   },
   "devDependencies": {
