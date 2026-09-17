@@ -1,25 +1,25 @@
 {
-  "name": "@traveler-app/auth",
-  "type": "module",
-  "exports": {
-    ".": {
-      "default": "./src/index.ts"
-    },
-    "./*": {
-      "default": "./src/*.ts"
-    }
-  },
-  "scripts": {},
-  "dependencies": {
-    "@better-auth/expo": "catalog:",
-    "@traveler-app/db": "workspace:*",
-    "@traveler-app/env": "workspace:*",
-    "better-auth": "catalog:",
-    "dotenv": "catalog:",
-    "zod": "catalog:"
-  },
-  "devDependencies": {
-    "@traveler-app/config": "workspace:*",
-    "typescript": "^6.0.3"
-  }
+	"name": "@traveler-app/auth",
+	"type": "module",
+	"exports": {
+		".": {
+			"default": "./src/index.ts"
+		},
+		"./*": {
+			"default": "./src/*.ts"
+		}
+	},
+	"scripts": {},
+	"dependencies": {
+		"@better-auth/expo": "catalog:",
+		"@traveler-app/db": "workspace:*",
+		"@traveler-app/env": "workspace:*",
+		"better-auth": "catalog:",
+		"dotenv": "catalog:",
+		"zod": "catalog:"
+	},
+	"devDependencies": {
+		"@traveler-app/config": "workspace:*",
+		"typescript": "^6.0.3"
+	}
 }

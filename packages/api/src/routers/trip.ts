@@ -3,8 +3,8 @@ import { z } from "zod";
 import { protectedProcedure, router } from "../index";
 
 export const tripRouter = router({
-	list: protectedProcedure.query(({ ctx }) => 
-		prisma.trip.findMany({ where: { ownerId: ctx.session.user.id } })
+	list: protectedProcedure.query(({ ctx }) =>
+		prisma.trip.findMany({ where: { ownerId: ctx.session.user.id } }),
 	),
 	create: protectedProcedure
 		.input(z.object({ name: z.string().min(1) }))
