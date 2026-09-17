@@ -68,54 +68,51 @@ model ItineraryItem {
 }
 
 enum PlaceCategory {
-	food
-	culture
-	nature
-	shopping
-	nightlife
-	attraction
+  food
+  culture
+  nature
+  shopping
+  nightlife
+  attraction
 }
 
 enum PlaceLabel {
-	popular 
-	hidden
-	instagram
-	skip
+  popular
+  hidden
+  instagram
+  skip
 }
 
 enum PriceBand {
-	free
-	low
-	mid
-	high
+  free
+  low
+  mid
+  high
 }
 
-
 model Place {
-  id         String          @id @default(cuid())
-	cityId     String 				 // add city table later
-	osmId      String?				 @unique // osm free map data
-  name       String
-  address    String?
-  latitude   Float
-  longitude  Float
-	category   PlaceCategory
-	labels		 PlaceLabel[]
-	openingHours String?
-	priceBand  PriceBand?
-	indoor     Boolean?
-	aiLabel    PlaceLabel?
-	aiConfidence Float?
-	verified	 Boolean?        @default(false)
-	verifiedById String?
-	verifiedBy   User?         @relation("PlaceVerifier", fields: [verifiedById], references: [id], onDelete: SetNull)
-	verifiedAt DateTime?
-	source		 String?				 @default("osm") // osm, google, foursquare, ai
-	items			ItineraryItem[]
+  id           String          @id @default(cuid())
+  cityId       String // add city table later
+  osmId        String?         @unique // osm free map data
+  name         String
+  address      String?
+  latitude     Float
+  longitude    Float
+  category     PlaceCategory
+  labels       PlaceLabel[]
+  openingHours String?
+  priceBand    PriceBand?
+  indoor       Boolean?
+  aiLabel      PlaceLabel?
+  aiConfidence Float?
+  verified     Boolean         @default(false)
+  verifiedAt   DateTime?
+  source       String          @default("osm") // osm, google, foursquare, ai
+  items        ItineraryItem[]
 
-  createdAt  DateTime        @default(now())
-  updatedAt  DateTime        @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-	@@index([cityId, verified, category])
+  @@index([cityId, verified, category])
   @@map("place")
 }
