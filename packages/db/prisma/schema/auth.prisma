@@ -10,6 +10,7 @@ model User {
   accounts      Account[]
   ownedTrips Trip[] @relation("TripOwner")
   memberships TripMember[]
+	verifiedPlaces Place[] @relation("PlaceVerifier")
   
   @@unique([email])
   @@map("user")
