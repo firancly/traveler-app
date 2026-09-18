@@ -134,5 +134,58 @@ export async function getItineraryItemService({
       },
     },
   });
-	return 	item;
+  return item;
+}
+
+export async function updateItineraryItemService({
+  userId,
+  itemId,
+  data,
+}: {
+  userId: string;
+  itemId: string;
+  data: {
+    title?: string;
+    notes?: string | null;
+    placeId?: string | null;
+    startAt?: Date | null;
+    endAt?: Date | null;
+  };
+}) {
+  const item = await prisma.itineraryItem.findFirst({
+    where: {
+      id: itemId,
+      trip: {
+        OR: [
+          {
+            ownerId: userId,
+          },
+          {
+            members: {
+              some: {
+                userId,
+
+                role: "editor",
+              },
+            },
+          },
+        ],
+      },
+    },
+  });
+
+  if (!item) {
+    return null;
+  }
+  return prisma.itineraryItem.update({
+    where: {
+      id: item.id,
+    },
+    data: {
+      title: data.title,
+      notes: data.notes,
+      startAt: data.startAt,
+      endAt: data.endAt,
+    },
+  });
 }

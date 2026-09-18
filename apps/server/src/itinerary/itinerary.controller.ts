@@ -2,6 +2,7 @@ import {
   createItineraryItemService,
   getItineraryItemService,
   getItineraryItemServices,
+  updateItineraryItemService,
 } from "./itinerary.service";
 
 export async function createItineraryController({
@@ -42,4 +43,22 @@ export async function getItineraryItemController({
   itemId: string;
 }) {
   return getItineraryItemService({ userId, itemId });
+}
+
+export async function updateItineraryItemController({
+  userId,
+  itemId,
+  data,
+}: {
+  userId: string;
+  itemId: string;
+  data: {
+    title?: string;
+    notes?: string | null;
+    placeId?: string | null;
+    startAt?: Date | null;
+    endAt?: Date | null;
+  };
+}) {
+  return updateItineraryItemService({ userId, itemId, data });
 }

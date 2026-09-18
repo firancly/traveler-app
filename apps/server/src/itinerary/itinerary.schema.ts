@@ -12,3 +12,12 @@ export const createItineraryItemSchema = z.object({
 export const ItineraryItemIdSchema = z.object({
 	id : z.string().min(1),
 })
+
+export const updateItineraryItemSchema = z.object({
+	id : z.string().min(1),
+	title : z.string().trim().min(1).max(200).optional(),
+	notes : z.string().trim().max(2000).nullable().optional(),
+	placeId : z.string().min(1).nullable().optional(),
+	startAt : z.coerce.date().optional(),
+	endAt : z.coerce.date().optional(),
+})
