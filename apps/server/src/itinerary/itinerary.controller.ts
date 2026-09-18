@@ -1,4 +1,8 @@
-import { createItineraryItemService } from "./itinerary.service";
+import {
+  createItineraryItemService,
+  getItineraryItemService,
+  getItineraryItemServices,
+} from "./itinerary.service";
 
 export async function createItineraryController({
   userId,
@@ -15,4 +19,27 @@ export async function createItineraryController({
   };
 }) {
   return createItineraryItemService({ userId, data });
+}
+
+export async function getItineraryItemsController({
+  userId,
+  tripId,
+}: {
+  userId: string;
+  tripId: string;
+}) {
+  return getItineraryItemServices({
+    userId,
+    tripId,
+  });
+}
+
+export async function getItineraryItemController({
+  userId,
+  itemId,
+}: {
+  userId: string;
+  itemId: string;
+}) {
+  return getItineraryItemService({ userId, itemId });
 }

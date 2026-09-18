@@ -8,3 +8,7 @@ export const createItineraryItemSchema = z.object({
 	startAt : z.coerce.date().optional(),
 	endAt : z.coerce.date().optional(),
 })
+
+export const ItineraryItemIdSchema = z.object({
+	id : z.string().min(1),
+})
