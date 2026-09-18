@@ -37,6 +37,7 @@ model TripMember {
   tripId    String
   userId    String
   role      TripMemberRole
+  position  Int            @default(0)
   trip      Trip           @relation(fields: [tripId], references: [id], onDelete: Cascade)
   user      User           @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt DateTime       @default(now())
