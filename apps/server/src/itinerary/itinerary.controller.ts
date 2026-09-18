@@ -1,5 +1,6 @@
 import {
   createItineraryItemService,
+  deleteItineraryItemService,
   getItineraryItemService,
   getItineraryItemServices,
   updateItineraryItemService,
@@ -58,7 +59,37 @@ export async function updateItineraryItemController({
     placeId?: string | null;
     startAt?: Date | null;
     endAt?: Date | null;
+		done? : boolean
   };
 }) {
   return updateItineraryItemService({ userId, itemId, data });
+}
+
+export async function deleteItineraryItemController({
+  userId,
+  itemId,
+}: {
+  userId: string;
+  itemId: string;
+}) {
+  return deleteItineraryItemService({
+    userId,
+    itemId,
+  });
+}
+
+export async function reorderItineraryController({
+	userId,
+	tripId,
+	itemIds,
+} : {
+	userId : string;
+	tripId : string;
+	itemIds : string[];
+}){
+	return reorderItineraryController({
+		userId,
+		tripId,
+		itemIds,
+	})
 }

@@ -2,12 +2,15 @@ import { protectedProcedure, t } from "@/trpc";
 import {
   createItineraryItemSchema,
   ItineraryItemIdSchema,
+  reorderItineraryItemsSchema,
   updateItineraryItemSchema,
 } from "./itinerary.schema";
 import {
   createItineraryController,
+  deleteItineraryItemController,
   getItineraryItemController,
   getItineraryItemsController,
+  reorderItineraryController,
   updateItineraryItemController,
 } from "./itinerary.controller";
 import { tripIdSchema } from "@/trips/trip.schema";
@@ -50,7 +53,22 @@ export const itineraryRouter = t.router({
           notes: input.notes,
           endAt: input.endAt,
           startAt: input.startAt,
+					done : input.done,
         },
       });
     }),
+		delete : protectedProcedure.input(ItineraryItemIdSchema).mutation(async ({input, ctx})=> {
+			return deleteItineraryItemController({
+				userId : ctx.user.id,
+				itemId : input.id,
+			});
+		}),
+
+		reorder : protectedProcedure.input(reorderItineraryItemsSchema).mutation(async ({input, ctx})=> {
+			return reorderItineraryController({
+				userId : ctx.user.id,
+				tripId : input.tripId,
+				itemIds : input.itemIds
+			})
+		})
 });

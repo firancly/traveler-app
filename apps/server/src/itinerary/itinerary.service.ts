@@ -1,4 +1,5 @@
 import prisma from "@traveler-app/db";
+import { redis } from "bun";
 
 export async function createItineraryItemService({
   userId,
@@ -150,6 +151,7 @@ export async function updateItineraryItemService({
     placeId?: string | null;
     startAt?: Date | null;
     endAt?: Date | null;
+		done? : boolean;
   };
 }) {
   const item = await prisma.itineraryItem.findFirst({
@@ -186,6 +188,111 @@ export async function updateItineraryItemService({
       notes: data.notes,
       startAt: data.startAt,
       endAt: data.endAt,
+			placeId : data.placeId,
+			done : data.done
     },
   });
+}
+
+export async function deleteItineraryItemService({
+  userId,
+  itemId,
+}: {
+  userId: string;
+  itemId: string;
+}) {
+  const item = await prisma.itineraryItem.findFirst({
+    where: {
+      id: itemId,
+      trip: {
+        OR: [
+          {
+            ownerId: userId,
+          },
+          {
+            members: {
+              some: {
+                userId,
+                role: "editor",
+              },
+            },
+          },
+        ],
+      },
+    },
+    select: {
+      id: true,
+    },
+  });
+
+  if (!item) return null;
+
+  await prisma.itineraryItem.delete({
+    where: {
+      id: item.id,
+    },
+  });
+
+  return true;
+}
+
+export async function reorderItineraryItemsService({
+  userId,
+  tripId,
+  itemIds,
+}: {
+  userId: string;
+  tripId: string;
+  itemIds: string[];
+}) {
+  const trip = await prisma.trip.findFirst({
+    where: {
+      id: tripId,
+      OR: [
+        {
+          ownerId: userId,
+        },
+        {
+          members: {
+            some: {
+              userId,
+              role: { in: ["owner", "editor"] },
+            },
+          },
+        },
+      ],
+    },
+    select: {
+      id: true,
+    },
+  });
+
+  if (!trip) return null;
+
+  const items = await prisma.itineraryItem.findMany({
+    where: {
+      tripId,
+      id: { in: itemIds },
+    },
+    select: {
+      id: true,
+    },
+  });
+
+  if (items.length !== itemIds.length) {
+    throw new Error("Invalid item list");
+  }
+
+  await prisma.$transaction(
+    itemIds.map((itemId, index) =>
+      prisma.itineraryItem.update({
+        where: {
+          id: itemId,
+        },
+        data: {
+          position: index,
+        },
+      })
+    )
+  );
 }

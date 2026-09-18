@@ -13,11 +13,17 @@ export const ItineraryItemIdSchema = z.object({
 	id : z.string().min(1),
 })
 
+export const reorderItineraryItemsSchema = z.object({
+	tripId : z.string().min(1),
+	itemIds : z.array(z.string().min(1)).min(1),
+})
+
 export const updateItineraryItemSchema = z.object({
 	id : z.string().min(1),
 	title : z.string().trim().min(1).max(200).optional(),
-	notes : z.string().trim().max(2000).nullable().optional(),
+	notes : z.string().trim().max(2000),
 	placeId : z.string().min(1).nullable().optional(),
-	startAt : z.coerce.date().optional(),
-	endAt : z.coerce.date().optional(),
+	startAt : z.coerce.date().nullable().optional(),
+	endAt : z.coerce.date().nullable().optional(),
+	done : z.boolean().optional(),
 })
