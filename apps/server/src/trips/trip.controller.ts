@@ -34,3 +34,7 @@ export async function updateTripController({ userId, tripId, data }: {
 export async function deleteTripController({ userId, tripId }: { userId: string, tripId: string }) {
     return deleteTripService({ userId, tripId })
 }
+
+export async function reorderTripController({userId, tripIds} : {userId : string, tripIds : string[],}){
+	return reorderTripController({userId, tripIds})
+}

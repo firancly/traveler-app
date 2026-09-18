@@ -18,3 +18,7 @@ export const updateTripSchema = z.object({
 export const tripIdSchema = z.object({
     id : z.string().min(1),
 })
+
+export const reorderTripsSchema = z.object({
+	tripIds : z.array(z.string().min(1)).min(1)
+})

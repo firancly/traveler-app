@@ -1,6 +1,6 @@
 import { t, protectedProcedure } from "@/trpc";
-import { createTripSchema, tripIdSchema, updateTripSchema } from "./trip.schema";
-import { createTripController, deleteTripController, getTripController, getTripsController, updateTripController } from "./trip.controller";
+import { createTripSchema, reorderTripsSchema, tripIdSchema, updateTripSchema } from "./trip.schema";
+import { createTripController, deleteTripController, getTripController, getTripsController, reorderTripController, updateTripController } from "./trip.controller";
 
 export const tripRouter = t.router({
     create: protectedProcedure.input(createTripSchema).mutation(async ({ input, ctx }) => {
@@ -36,6 +36,12 @@ export const tripRouter = t.router({
         return deleteTripController({
             userId: ctx.user.id,
             tripId: input.id
-        })
-    })
+        });
+    }),
+		reorder : protectedProcedure.input(reorderTripsSchema).mutation(async ({ input, ctx, }) => {
+			return reorderTripController({
+				userId : ctx.user.id,
+				tripIds : input.tripIds
+			})
+		})
 })
