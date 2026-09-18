@@ -32,5 +32,5 @@ export async function updateTripController({ userId, tripId, data }: {
 }
 
 export async function deleteTripController({ userId, tripId }: { userId: string, tripId: string }) {
-  return  deleteTripService({ userId, tripId })
+    return deleteTripService({ userId, tripId })
 }

@@ -1,13 +1,41 @@
-import { t } from "@/trpc";
-import { createTripSchema } from "./trip.schema";
-import { createTripController } from "./trip.controller";
-import { protectedProcedure } from '../trpc';
+import { t, protectedProcedure } from "@/trpc";
+import { createTripSchema, tripIdSchema, updateTripSchema } from "./trip.schema";
+import { createTripController, deleteTripController, getTripController, getTripsController, updateTripController } from "./trip.controller";
 
 export const tripRouter = t.router({
-    create : protectedProcedure.input(createTripSchema).mutation(async ({ input, ctx })=>{
+    create: protectedProcedure.input(createTripSchema).mutation(async ({ input, ctx }) => {
         return createTripController({
-            userId : ctx.user.id,
-            data : input,
+            userId: ctx.user.id,
+            data: input,
         });
+    }),
+    getAll: protectedProcedure.query(async ({ ctx }) => {
+        return getTripsController({
+            userId: ctx.user.id,
+        })
+    }),
+    getOne: protectedProcedure.input(tripIdSchema).query(async ({ input, ctx }) => {
+        return getTripController({
+            userId: ctx.user.id,
+            tripId: input.id
+        })
+    }),
+    update: protectedProcedure.input(updateTripSchema).mutation(async ({ input, ctx }) => {
+        return updateTripController({
+            userId: ctx.user.id,
+            tripId: input.id,
+            data: {
+                name: input.name,
+                description: input.description,
+                startDate: input.startDate?.toISOString() ?? null,
+                endDate: input.endDate?.toISOString() ?? null,
+            }
+        });
+    }),
+    delete: protectedProcedure.input(tripIdSchema).mutation(async ({ input, ctx }) => {
+        return deleteTripController({
+            userId: ctx.user.id,
+            tripId: input.id
+        })
     })
 })
