@@ -3,6 +3,8 @@ import { env } from "@traveler-app/env/server";
 
 import { PrismaClient } from "../prisma/generated/client";
 
+export * from "../prisma/generated/enums";
+
 export function createPrismaClient() {
 	const adapter = new PrismaNeon({
 		connectionString: env.DATABASE_URL,
