@@ -6,7 +6,7 @@
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build",
-		"serve": "vite preview",
+		"serve": "vite preview --host 0.0.0.0 --port ${PORT:-4173}",
 		"start": "vite",
 		"check-types": "vite build && tsc --noEmit",
 		"generate-pwa-assets": "pwa-assets-generator"

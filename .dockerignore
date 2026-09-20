@@ -1,0 +1,10 @@
+node_modules
+**/node_modules
+**/.env
+**/.env.*
+.git
+**/dist
+**/.turbo
+**/.expo
+packages/db/prisma/generated
+packages/db/scripts/.cache
