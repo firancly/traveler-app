@@ -30,6 +30,7 @@
         "@tanstack/react-form": "catalog:",
         "@tanstack/react-query": "catalog:",
         "@traveler-app/api": "workspace:*",
+        "@traveler-app/db": "workspace:*",
         "@traveler-app/env": "workspace:*",
         "@trpc/client": "catalog:",
         "@trpc/server": "catalog:",
