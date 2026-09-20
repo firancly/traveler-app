@@ -17,6 +17,7 @@
 		"@expo/metro-runtime": "~57.0.12",
 		"@expo/vector-icons": "^15.1.1",
 		"@gorhom/bottom-sheet": "^5.2.14",
+		"@react-native-async-storage/async-storage": "2.2.0",
 		"@tanstack/react-form": "catalog:",
 		"@tanstack/react-query": "catalog:",
 		"@traveler-app/api": "workspace:*",
@@ -54,7 +55,8 @@
 		"tailwind-variants": "^3.3.1",
 		"tailwindcss": "catalog:",
 		"uniwind": "^1.11.0",
-		"zod": "catalog:"
+		"zod": "catalog:",
+		"@traveler-app/db": "workspace:*"
 	},
 	"devDependencies": {
 		"@traveler-app/config": "workspace:*",
