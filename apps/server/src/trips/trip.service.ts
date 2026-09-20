@@ -1,4 +1,5 @@
 import prisma from "@traveler-app/db";
+import { canDeleteTrip, canEditTrip } from "./trip.permissions";
 
 export async function tripService({
   userId,
@@ -111,28 +112,22 @@ export async function updateTripService({
     endDate?: string | null;
   };
 }) {
-  const trip = await prisma.trip.findFirst({
-    where: {
-      id: tripId,
-      OR: [
-        {
-          ownerId: userId,
-        },
-        {
-          members: {
-            some: {
-              userId,
-              role: "editor",
-            },
-          },
-        },
-      ],
-    },
-  });
+	const membership = await prisma.tripMember.findUnique({
+		where : {
+			tripId_userId : {
+				tripId,
+				userId,
+			},
+		},
+		select : {
+			role : true
+		}
+	})
 
-  if (!trip) {
-    return null;
-  }
+	if(!membership || !canEditTrip(membership.role)){
+		return null;
+	}
+
   const updatedTrip = await prisma.trip.update({
     where: {
       id: tripId,
@@ -163,16 +158,23 @@ export async function deleteTripService({
   userId: string;
   tripId: string;
 }) {
-  const trip = await prisma.trip.findFirst({
+  const membership = await prisma.tripMember.findUnique({
     where: {
-      id: tripId,
-      ownerId: userId,
-    },
+			tripId_userId : {
+				tripId,
+				userId,
+			}
+    }, 
+		select : {
+			role : true,
+		}
   });
 
-  if (!trip) {
+  if (!membership || !canDeleteTrip(membership.role)) {
     return null;
   }
+
+	
   const deletedTrip = await prisma.trip.delete({
     where: {
       id: tripId,
@@ -181,6 +183,8 @@ export async function deleteTripService({
 
   return deletedTrip;
 }
+
+
 
 export async function reorderTripsService({userId, tripIds} : {
 	userId : string;

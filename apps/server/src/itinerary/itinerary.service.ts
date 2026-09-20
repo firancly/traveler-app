@@ -1,5 +1,5 @@
+import { canEditTrip } from "@/trips/trip.permissions";
 import prisma from "@traveler-app/db";
-import { redis } from "bun";
 
 export async function createItineraryItemService({
   userId,
@@ -15,29 +15,23 @@ export async function createItineraryItemService({
     endAt?: Date;
   };
 }) {
-  const trip = await prisma.trip.findFirst({
-    where: {
-      id: data.tripId,
-      OR: [
-        {
-          ownerId: userId,
-        },
-        {
-          members: {
-            some: {
-              userId,
-              role: {
-                in: ["owner", "editor"],
-              },
-            },
-          },
-        },
-      ],
-    },
-  });
-  if (!trip) {
-    return null;
-  }
+
+	const membership = await prisma.tripMember.findUnique({
+		where : {
+			tripId_userId : {
+				tripId : data.tripId,
+				userId,
+			},
+		},
+		select : {
+			role : true,
+		},
+	});
+
+	if(!membership || !canEditTrip(membership.role)){
+		return null;
+	}
+
   const lastItem = await prisma.itineraryItem.findFirst({
     where: {
       tripId: data.tripId,
@@ -295,4 +289,6 @@ export async function reorderItineraryItemsService({
       })
     )
   );
+
+	return true;
 }
