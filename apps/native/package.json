@@ -55,7 +55,8 @@
 		"tailwind-variants": "^3.3.1",
 		"tailwindcss": "catalog:",
 		"uniwind": "^1.11.0",
-		"zod": "catalog:"
+		"zod": "catalog:",
+		"@traveler-app/db": "workspace:*"
 	},
 	"devDependencies": {
 		"@traveler-app/config": "workspace:*",
