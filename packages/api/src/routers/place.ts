@@ -1,4 +1,5 @@
 import prisma, { PlaceCategory, PlaceLabel } from "@traveler-app/db";
+import { env } from "@traveler-app/env/server";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { publicProcedure, router } from "../index";
@@ -13,13 +14,17 @@ export const placeRouter = router({
 				indoor: z.boolean().optional(),
 				limit: z.number().int().min(1).max(50).default(20),
 				cursor: z.string().nullish(),
+				includeUnverified: z.boolean().default(false),
 			}),
 		)
 		.query(async ({ input }) => {
 			const places = await prisma.place.findMany({
 				where: {
 					cityId: input.cityId,
-					verified: true,
+					verified:
+						input.includeUnverified && env.NODE_ENV === "development"
+							? undefined
+							: true,
 					category: input.category,
 					indoor: input.indoor,
 					labels: input.label ? { has: input.label } : undefined,
@@ -40,13 +45,17 @@ export const placeRouter = router({
 		.input(
 			z.object({
 				id: z.string(),
+				includeUnverified: z.boolean().default(false),
 			}),
 		)
 		.query(async ({ input }) => {
 			const place = await prisma.place.findFirst({
 				where: {
 					id: input.id,
-					verified: true,
+					verified:
+						input.includeUnverified && env.NODE_ENV === "development"
+							? undefined
+							: true,
 				},
 			});
 			if (!place) {
