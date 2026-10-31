@@ -15,10 +15,8 @@ import { TextArea } from "@/components/ui/TextArea";
 import { authClient } from "@/lib/auth-client";
 import { CATEGORY_ICONS } from "@/lib/category-icons";
 import { formatDate } from "@/lib/format-date";
+import { getDefaultPace, PACES, type Pace } from "@/lib/preferences";
 import { queryClient, trpc } from "@/utils/trpc";
-
-const PACES = ["relaxed", "normal", "packed"] as const;
-type Pace = (typeof PACES)[number];
 
 export default function Plan() {
 	const [interests, setInterests] = useState<PlaceCategory[]>([
@@ -58,6 +56,19 @@ export default function Plan() {
 	}
 
 	const [pace, setPace] = useState<Pace>("normal");
+
+	// start from the default pace chosen in Settings
+	useEffect(() => {
+		let isActive = true;
+		getDefaultPace()
+			.then((saved) => {
+				if (isActive) setPace(saved);
+			})
+			.catch(() => {}); // keep "normal" if storage can't be read
+		return () => {
+			isActive = false;
+		};
+	}, []);
 
 	if (isPending) {
 		return (

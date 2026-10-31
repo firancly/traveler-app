@@ -11,3 +11,13 @@ export const CATEGORY_ICONS: Record<PlaceCategory, IconName> = {
 	nightlife: "moon",
 	attraction: "camera",
 };
+
+// full class names so Tailwind can see them
+export const CATEGORY_TINTS: Record<PlaceCategory, string> = {
+	food: "bg-category-food",
+	culture: "bg-category-culture",
+	nature: "bg-category-nature",
+	shopping: "bg-category-shopping",
+	nightlife: "bg-category-nightlife",
+	attraction: "bg-category-attraction",
+};

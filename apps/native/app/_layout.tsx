@@ -18,7 +18,8 @@ function StackLayout() {
 
 	return (
 		<View style={{ flex: 1, backgroundColor }}>
-			<StatusBar style="light" />
+			{/* dark icons by default; screens with a dark top (Home) switch to light */}
+			<StatusBar style="dark" />
 			<Stack
 				screenOptions={{
 					contentStyle: { backgroundColor },

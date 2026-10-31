@@ -5,7 +5,7 @@ import { Pressable, Text, View } from "react-native";
 
 type Props = {
 	icon: keyof typeof Ionicons.glyphMap;
-	label: string;
+	label?: string; // small line above the value; omit for one-line rows
 	value: string;
 	right?: ReactNode;
 	onPress?: () => void;
@@ -45,7 +45,7 @@ export function FieldRow({
 			</View>
 
 			<View className="flex-1">
-				<Text className="text-muted text-xs">{label}</Text>
+				{label ? <Text className="text-muted text-xs">{label}</Text> : null}
 				<Text className="font-semibold text-base text-foreground">{value}</Text>
 			</View>
 
