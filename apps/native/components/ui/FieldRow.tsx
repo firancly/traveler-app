@@ -5,7 +5,7 @@ import { Pressable, Text, View } from "react-native";
 
 type Props = {
 	icon: keyof typeof Ionicons.glyphMap;
-	label: string;
+	label?: string;
 	value: string;
 	right?: ReactNode;
 	onPress?: () => void;
